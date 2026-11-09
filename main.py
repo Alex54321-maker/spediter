@@ -16,13 +16,15 @@ app = FastAPI(
 
 # 2. Активируем CORS рубеж защиты
 # Указываем точный URL твоего приложения на Vercel
+# 2. Активируем CORS рубеж защиты
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://spediter.vercel.app"],
-    allow_credentials=True,
+    allow_origins=["*"],  # Разрешает любые внешние запросы со всех сайтов
+    allow_credentials=False,  # ВАЖНО: со звездочкой credentials должна быть строго False!
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 # 3. Pydantic-схема (Защита №1: Валидация входящих данных грузовика)
