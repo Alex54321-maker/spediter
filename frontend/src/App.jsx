@@ -26,7 +26,7 @@ export default function App() {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-const res = await fetch("http://127.0.0.1:8000/api/v1/lkw-status");
+const res = await fetch("https://spediter.onrender.com");
         if (res.ok) {
           const data = await res.json();
           setLkwStatus(data);
@@ -92,7 +92,7 @@ const res = await fetch("http://127.0.0.1:8000/api/v1/lkw-status");
     }
 
     try {
-  const res = await fetch("http://127.0.0.1:8000/api/v1/dispatch",{
+  const res = await fetch("https://spediter.onrender.com");{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
