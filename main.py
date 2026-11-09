@@ -15,9 +15,10 @@ app = FastAPI(
 )
 
 # 2. Активируем CORS рубеж защиты
+# Указываем точный URL твоего приложения на Vercel
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
+    allow_origins=["http://localhost:5173", "https://spediter.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
