@@ -30,7 +30,8 @@ app.add_middleware(
 # 3. Pydantic-схема (Защита №1: Валидация входящих данных грузовика)
 class DeliveryRequest(BaseModel):
     # Ограничиваем имя товара строгими правилами, чтобы избежать инъекций
-    cargo_name: str = Field(..., min_length=2, max_length=50, pattern=r"^[a-zA-Z0-9а-яА-Я\s\-\.]+$")
+    cargo_name: str = Field(..., min_length=2, max_length=50, pattern=r"^[a-zA-Z0-9äöüÄÖÜß\s\-\.]+$")
+
     # Вес груза в тоннах. Защита от гигантских чисел и отрицательных значений!
     weight_tons: float = Field(..., gt=0, le=7.5, description="Максимальная грузоподъемность LKW 7.5 тонн")
     # Точка назначения в Бёблингене
@@ -57,12 +58,11 @@ async def simulate_lkw_travel(destination: str):
 @app.post("/api/v1/dispatch")
 async def dispatch_lkw(request: DeliveryRequest):
     if lkw_status["status"] == "EN_ROUTE":
-        raise HTTPException(status_code=400, detail="LKW ist bereits unterwegs! Машина уже в рейсе.")
+        raise HTTPException(status_code=400, detail="LKW ist bereits unterwegs!")
 
-    # Строго проверяем разрешенные точки в Бёблингене
     allowed_destinations = ["Mercaden", "Kaufland", "Diezenhalde"]
     if request.destination not in allowed_destinations:
-        raise HTTPException(status_code=400, detail="Unbekanntes Ziel в Бёблингене!")
+        raise HTTPException(status_code=400, detail="Unbekanntes Ziel in Böblingen!")
 
     # Загружаем LKW и отправляем в рейс
     lkw_status["status"] = "EN_ROUTE"

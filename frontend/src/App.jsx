@@ -9,12 +9,13 @@ const STATIONS = {
 };
 
 export default function App() {
-  const [lkwStatus, setLkwStatus] = useState({
+   const [lkwStatus, setLkwStatus] = useState({
     status: "IDLE",
-    location: "Загрузка...",
+    location: "Laden...",
     current_cargo: null,
     weight: 0
   });
+
   const [cargoName, setCargoName] = useState("Lebensmittel");
   const [weight, setWeight] = useState(4.5);
   const [message, setMessage] = useState("");
@@ -121,15 +122,16 @@ const res = await fetch("https://spediter.onrender.com/api/v1/lkw-status");
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl flex flex-col justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-slate-400 mb-4">Текущий статус LKW:</h2>
+                   <div>
+            <h2 className="text-xl font-semibold text-slate-400 mb-4">Aktueller LKW-Status:</h2>
             <div className="grid grid-cols-2 gap-4 text-lg">
-              <div>Статус: <span className={`font-bold ${lkwStatus.status === 'EN_ROUTE' ? 'text-amber-400 animate-pulse' : lkwStatus.status === 'DELIVERED' ? 'text-emerald-400' : 'text-slate-400'}`}>{lkwStatus.status}</span></div>
-              <div>Локация: <span className="text-cyan-300 font-medium text-base">{lkwStatus.location}</span></div>
-              <div>Груз: <span className="text-slate-300">{lkwStatus.current_cargo || "—"}</span></div>
-              <div>Вес: <span className="text-slate-300">{lkwStatus.weight ? `${lkwStatus.weight} т` : "0 т"}</span></div>
+              <div>Status: <span className={`font-bold ${lkwStatus.status === 'EN_ROUTE' ? 'text-amber-400 animate-pulse' : lkwStatus.status === 'DELIVERED' ? 'text-emerald-400' : 'text-slate-400'}`}>{lkwStatus.status}</span></div>
+              <div>Standort: <span className="text-cyan-300 font-medium text-base">{lkwStatus.location}</span></div>
+              <div>Ladung: <span className="text-slate-300">{lkwStatus.current_cargo || "—"}</span></div>
+              <div>Gewicht: <span className="text-slate-300">{lkwStatus.weight ? `${lkwStatus.weight} t` : "0 t"}</span></div>
             </div>
           </div>
+
           {message && <div className="mt-4 p-3 bg-slate-700 text-cyan-300 rounded-lg text-sm font-mono border border-cyan-900 break-words">{message}</div>}
         </div>
 
@@ -138,26 +140,31 @@ const res = await fetch("https://spediter.onrender.com/api/v1/lkw-status");
         </div>
       </div>
 
-      <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 mb-8 shadow-xl">
-        <h2 className="text-xl font-semibold text-slate-400 mb-4">Параметры погрузки:</h2>
+           <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 mb-8 shadow-xl">
+        <h2 className="text-xl font-semibold text-slate-400 mb-4">Ladeparameter:</h2>
         <div className="flex gap-4">
-          <input type="text" value={cargoName} onChange={(e) => setCargoName(e.target.value)} className="bg-slate-900 border border-slate-700 rounded p-2 text-white w-full" placeholder="Название груза" />
-          <input type="number" step="0.1" value={weight} onChange={(e) => setWeight(e.target.value)} className="bg-slate-900 border border-slate-700 rounded p-2 text-white w-32" placeholder="Тонны" />
+          <input type="text" value={cargoName} onChange={(e) => setCargoName(e.target.value)} className="bg-slate-900 border border-slate-700 rounded p-2 text-white w-full" placeholder="Frachtbezeichnung" />
+          <input type="number" step="0.1" value={weight} onChange={(e) => setWeight(e.target.value)} className="bg-slate-900 border border-slate-700 rounded p-2 text-white w-32" placeholder="Tonnen" />
         </div>
       </div>
 
-      <h2 className="text-xl font-semibold text-slate-400 mb-4">Диспетчерский пульт (Выбор маршрута):</h2>
+
+            <h2 className="text-xl font-semibold text-slate-400 mb-4">Leitstand (Routenwahl):</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <button onClick={() => dispatchLkw("Mercaden")} disabled={lkwStatus.status === "EN_ROUTE"} className="bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
-          Отправить в Mercaden 🛒
+          An Mercaden senden 🛒
         </button>
+
         <button onClick={() => dispatchLkw("Kaufland")} disabled={lkwStatus.status === "EN_ROUTE"} className="bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
-          Отправить в Kaufland 📦
+          An Kaufland senden 📦
         </button>
+
         <button onClick={() => dispatchLkw("Diezenhalde")} disabled={lkwStatus.status === "EN_ROUTE"} className="bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
-          Отправить в Diezenhalde 🏠
+          An Diezenhalde senden 🏠
         </button>
       </div>
     </div>
   );
 }
+
+
